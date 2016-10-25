@@ -85,121 +85,35 @@ go get -u github.com/yl365/TcpProxy
 1、 直连spark测试:
 
 ```
-[yl@mobile-server-61 ~]$ ab -k -c 1000 -n 1000000 http://10.15.107.61:52241/
-This is ApacheBench, Version 2.0.40-dev <$Revision: 1.146 $> apache-2.0
-Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
-Copyright 2006 The Apache Software Foundation, http://www.apache.org/
+[yl@mobile-server-61 bin]$ ./gobench -c 1000 -k -t 20  -u http://10.15.107.61:52241/
+Dispatching 1000 clients
+Waiting for results...
 
-Benchmarking 10.15.107.61 (be patient)
-Completed 100000 requests
-Completed 200000 requests
-Completed 300000 requests
-Completed 400000 requests
-Completed 500000 requests
-Completed 600000 requests
-Completed 700000 requests
-Completed 800000 requests
-Completed 900000 requests
-Finished 1000000 requests
-
-
-Server Software:        
-Server Hostname:        10.15.107.61
-Server Port:            -13295
-
-Document Path:          /
-Document Length:        14 bytes
-
-Concurrency Level:      1000
-Time taken for tests:   21.298565 seconds
-Complete requests:      1000000
-Failed requests:        0
-Write errors:           0
-Keep-Alive requests:    1000000
-Total transferred:      154121044 bytes
-HTML transferred:       14011004 bytes
-Requests per second:    46951.52 [#/sec] (mean)
-Time per request:       21.299 [ms] (mean)
-Time per request:       0.021 [ms] (mean, across all concurrent requests)
-Transfer rate:          7066.58 [Kbytes/sec] received
-
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-Connect:        0    0   2.2      0     124
-Processing:     0   20  13.1     19     119
-Waiting:        0   20  13.1     19     119
-Total:          0   20  13.3     19     148
-
-Percentage of the requests served within a certain time (ms)
-  50%     19
-  66%     24
-  75%     28
-  80%     30
-  90%     38
-  95%     45
-  98%     53
-  99%     60
- 100%    148 (longest request)
+Requests:                          1394918 hits
+Successful requests:               1394918 hits
+Network failed:                          0 hits
+Bad requests failed (!2xx):              0 hits
+Successful requests rate:            69745 hits/sec
+Read throughput:                   9067090 bytes/sec
+Write throughput:                  6281703 bytes/sec
+Test time:                              20 sec
 ```
  
 2、 通过TcpProxy测试:
  
 ```
-[yl@mobile-server-61 ~]$ ab -k -c 1000 -n 1000000 http://10.15.107.61:18080/
-This is ApacheBench, Version 2.0.40-dev <$Revision: 1.146 $> apache-2.0
-Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
-Copyright 2006 The Apache Software Foundation, http://www.apache.org/
+[yl@mobile-server-61 bin]$ ./gobench -c 1000 -k -t 20  -u http://10.15.107.61:18080/
+Dispatching 1000 clients
+Waiting for results...
 
-Benchmarking 10.15.107.61 (be patient)
-Completed 100000 requests
-Completed 200000 requests
-Completed 300000 requests
-Completed 400000 requests
-Completed 500000 requests
-Completed 600000 requests
-Completed 700000 requests
-Completed 800000 requests
-Completed 900000 requests
-Finished 1000000 requests
-
-
-Server Software:        
-Server Hostname:        10.15.107.61
-Server Port:            18080
-
-Document Path:          /
-Document Length:        14 bytes
-
-Concurrency Level:      1000
-Time taken for tests:   20.702664 seconds
-Complete requests:      1000000
-Failed requests:        0
-Write errors:           0
-Keep-Alive requests:    1000000
-Total transferred:      154000000 bytes
-HTML transferred:       14000000 bytes
-Requests per second:    48302.96 [#/sec] (mean)
-Time per request:       20.703 [ms] (mean)
-Time per request:       0.021 [ms] (mean, across all concurrent requests)
-Transfer rate:          7264.28 [Kbytes/sec] received
-
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-Connect:        0    0   3.2      0     171
-Processing:     0   20   7.0     19      90
-Waiting:        0   20   7.0     19      89
-Total:          0   20   7.8     19     218
-
-Percentage of the requests served within a certain time (ms)
-  50%     19
-  66%     22
-  75%     24
-  80%     25
-  90%     29
-  95%     32
-  98%     36
-  99%     40
- 100%    218 (longest request)
+Requests:                           909785 hits
+Successful requests:                909785 hits
+Network failed:                          0 hits
+Bad requests failed (!2xx):              0 hits
+Successful requests rate:            45489 hits/sec
+Read throughput:                   5913739 bytes/sec
+Write throughput:                  4098627 bytes/sec
+Test time:                              20 sec
 ```
 
 欢迎试用并提出意见建议. 如果发现bug, 请Issues, 谢谢!

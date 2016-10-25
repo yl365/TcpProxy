@@ -84,36 +84,53 @@ go get -u github.com/yl365/TcpProxy
 
 1、 直连spark测试:
 
-```
-[yl@mobile-server-61 bin]$ ./gobench -c 1000 -k -t 20  -u http://10.15.107.61:52241/
-Dispatching 1000 clients
+``` 
+[yl@mobile-server-61 bin]$ ./gobench -c 3000 -k -t 10  -u http://10.15.107.61:52241/
+Dispatching 3000 clients
 Waiting for results...
 
-Requests:                          1394918 hits
-Successful requests:               1394918 hits
+Requests:                           729340 hits
+Successful requests:                729339 hits
 Network failed:                          0 hits
 Bad requests failed (!2xx):              0 hits
-Successful requests rate:            69745 hits/sec
-Read throughput:                   9067090 bytes/sec
-Write throughput:                  6281703 bytes/sec
-Test time:                              20 sec
+Successful requests rate:            72933 hits/sec
+Read throughput:                   9481420 bytes/sec
+Write throughput:                  6587163 bytes/sec
+Test time:                              10 sec
 ```
- 
-2、 通过TcpProxy测试:
- 
+
+2、 通过haproxy测试:
+
 ```
-[yl@mobile-server-61 bin]$ ./gobench -c 1000 -k -t 20  -u http://10.15.107.61:18080/
-Dispatching 1000 clients
+[yl@mobile-server-61 bin]$ ./gobench -c 3000 -k -t 10  -u http://10.15.107.61:8008/
+Dispatching 3000 clients
 Waiting for results...
 
-Requests:                           909785 hits
-Successful requests:                909785 hits
+Requests:                           128291 hits
+Successful requests:                128291 hits
 Network failed:                          0 hits
 Bad requests failed (!2xx):              0 hits
-Successful requests rate:            45489 hits/sec
-Read throughput:                   5913739 bytes/sec
-Write throughput:                  4098627 bytes/sec
-Test time:                              20 sec
+Successful requests rate:            12829 hits/sec
+Read throughput:                   1667952 bytes/sec
+Write throughput:                  1155709 bytes/sec
+Test time:                              10 sec
+```
+
+3、 通过TcpProxy测试:
+
+```
+[yl@mobile-server-61 bin]$ ./gobench -c 3000 -k -t 10  -u http://10.15.107.61:18080/
+Dispatching 3000 clients
+Waiting for results...
+
+Requests:                           403622 hits
+Successful requests:                403622 hits
+Network failed:                          0 hits
+Bad requests failed (!2xx):              0 hits
+Successful requests rate:            40362 hits/sec
+Read throughput:                   5247086 bytes/sec
+Write throughput:                  3659598 bytes/sec
+Test time:                              10 sec
 ```
 
 欢迎试用并提出意见建议. 如果发现bug, 请Issues, 谢谢!

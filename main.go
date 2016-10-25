@@ -63,6 +63,8 @@ func IsDisconnect(err error) bool {
 		if nerr, ok := err.(net.Error); ok {
 			if nerr.Timeout() || nerr.Temporary() {
 				return false
+			} else {
+				return true
 			}
 		} else {
 			return true
@@ -74,10 +76,11 @@ func IsDisconnect(err error) bool {
 
 func copyContent(from net.Conn, to net.Conn, wg *sync.WaitGroup, done chan bool, otherDone chan bool) {
 	var err error = nil
-	var data []byte = make([]byte, 4096)
+	var data []byte = make([]byte, 5120)
 	var read int = 0
 	var write int = 0
 	var writeTotal int = 0
+
 	for {
 		select {
 		case <-otherDone:
@@ -99,11 +102,13 @@ func copyContent(from net.Conn, to net.Conn, wg *sync.WaitGroup, done chan bool,
 
 			if read > 0 {
 				to.SetWriteDeadline(time.Now().Add(time.Second * 2))
+				writeTimes = 0
 				writeTotal = 0
 				write = 0
 
 				for writeTotal < read {
 					write, err = to.Write(data[writeTotal:read])
+
 					if IsDisconnect(err) {
 						fmt.Printf("to.Write Disconnect!\n")
 						done <- true

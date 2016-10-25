@@ -1,6 +1,6 @@
 {
-	"Listen": ":18080",
-	"Mode": "master/hash/rand",
+    "Listen": ":18080",
+    "Mode": "master/hash/rand",
     "AllHost": [
         {
             "min": 0, 

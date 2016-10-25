@@ -64,15 +64,12 @@ func CheckHosts() {
 
 	for {
 		for i, group := range ALLHOST.AllHost {
-			//fmt.Printf("1#: %d--->%v\n", i, group)
 
 			for ii, host := range group.Hosts {
-				//fmt.Printf("\t2#: %d--->%v\n", ii, host)
 
 				conn, err := net.DialTimeout("tcp", host.IP, 2*time.Second)
 
 				if err != nil {
-					//fmt.Printf("conn %s: err=%v\n", host.IP, err)
 					lock.Lock()
 					ALLHOST.AllHost[i].Hosts[ii].Status -= 1
 					lock.Unlock()
@@ -90,7 +87,7 @@ func CheckHosts() {
 		}
 
 		fmt.Printf("\nCheckHosts AllHost: %+v\n", ALLHOST)
-		time.Sleep(300 * time.Second)
+		time.Sleep(10 * time.Second)
 	}
 
 }

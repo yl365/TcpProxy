@@ -43,18 +43,20 @@ func handle(sconn net.Conn) {
 	fmt.Printf("NEW CONN: %s-->%s OK!\n", sconn.RemoteAddr(), dconn.RemoteAddr())
 	defer dconn.Close()
 
-	ExitChan := make(chan bool, 1)
-	go copyData(dconn, sconn, ExitChan)
-	go copyData(sconn, dconn, ExitChan)
-	<-ExitChan
+	var wg sync.WaitGroup
+	ch1 := make(chan bool, 1)
+	ch2 := make(chan bool, 1)
+	wg.Add(2)
+	go copyContent(dconn, sconn, &wg, ch1, ch2)
+	go copyContent(sconn, dconn, &wg, ch2, ch1)
+	wg.Wait()
 
-	//	var wg sync.WaitGroup
-	//	ch1 := make(chan bool, 1)
-	//	ch2 := make(chan bool, 1)
-	//	wg.Add(2)
-	//	go copyContent(dconn, sconn, &wg, ch1, ch2)
-	//	go copyContent(sconn, dconn, &wg, ch2, ch1)
-	//	wg.Wait()
+	// 也可以直接使用io.Copy, 缺点是一方网络断开另一方不知道
+	//	ExitChan := make(chan bool, 1)
+	//	go copyData(dconn, sconn, ExitChan)
+	//	go copyData(sconn, dconn, ExitChan)
+	//	<-ExitChan
+
 }
 func IsDisconnect(err error) bool {
 	if err != nil {

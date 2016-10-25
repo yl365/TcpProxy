@@ -19,7 +19,9 @@ go get -u github.com/yl365/TcpProxy
 ```
 
 ## 使用
+
 1. 修改配置文件config.json
+
 ```
 {
     "Listen": ":18080",             //监听端口
@@ -70,12 +72,15 @@ go get -u github.com/yl365/TcpProxy
     ]
 }
 ```
+
 2. 在配置目录运行: nohup ./TcpProxy &
+
 
 ## 性能测试
 后端服务器采用spark作为目标服务器: `./spark -port 52241 "<h1>Ooops</h1>" `
 
 1. 直连spark测试:
+
 ```
 [yl@mobile-server-61 ~]$ ab -k -c 1000 -n 1000000 http://10.15.107.61:52241/
 This is ApacheBench, Version 2.0.40-dev <$Revision: 1.146 $> apache-2.0
@@ -133,7 +138,9 @@ Percentage of the requests served within a certain time (ms)
   99%     60
  100%    148 (longest request)
  ```
+ 
  2. 通过TcpProxy测试:
+ 
  ```
 [yl@mobile-server-61 ~]$ ab -k -c 1000 -n 1000000 http://10.15.107.61:18080/
 This is ApacheBench, Version 2.0.40-dev <$Revision: 1.146 $> apache-2.0

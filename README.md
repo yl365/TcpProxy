@@ -1,6 +1,9 @@
 # TcpProxy
 一个支持主备/哈希/随机分配模式的负载均衡代理服务器
 
+【TcpProxy技术交流QQ群】: 99328252
+点击链接加入群：http://jq.qq.com/?_wv=1027&k=40qDFxw
+
 ```
 负载均衡策略: 
     第一级采用来源IP计算hash值来分配到对应的组;
@@ -134,3 +137,5 @@ Test time:                              10 sec
 ```
 
 欢迎试用并提出意见建议. 如果发现bug, 请Issues, 谢谢!
+【TcpProxy技术交流QQ群】: 99328252
+点击链接加入群：http://jq.qq.com/?_wv=1027&k=40qDFxw

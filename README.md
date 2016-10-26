@@ -1,9 +1,8 @@
 # TcpProxy
 一个支持主备/哈希/随机分配模式的负载均衡代理服务器
 
-【TcpProxy技术交流QQ群】: 99328252
-
-点击链接加入群：http://jq.qq.com/?_wv=1027&k=40qDFxw
+【TcpProxy技术交流QQ群】: 99328252  
+加入群：http://jq.qq.com/?_wv=1027&k=40qDFxw
 
 
 ```
@@ -139,7 +138,7 @@ Test time:                              10 sec
 ```
 
 欢迎试用并提出意见建议. 如果发现bug, 请Issues, 谢谢!
+如果你觉得这个项目有意义/或者对你有帮助/或者仅仅是为了给我一点鼓励, 请不要吝惜, 给我一个 ***star***
 
 【TcpProxy技术交流QQ群】: 99328252
-
-点击链接加入群：http://jq.qq.com/?_wv=1027&k=40qDFxw
+加入群：http://jq.qq.com/?_wv=1027&k=40qDFxw

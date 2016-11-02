@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Tcpproxy by yl365</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Tcpproxy</h1>
+      <h2 class="project-tagline">一个支持主备/哈希/随机分配模式的负载均衡代理服务器</h2>
+      <a href="https://github.com/yl365/TcpProxy" class="btn">View on GitHub</a>
+      <a href="https://github.com/yl365/TcpProxy/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/yl365/TcpProxy/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="tcpproxy" class="anchor" href="#tcpproxy" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>TcpProxy</h1>
+
+<p>一个支持主备/哈希/随机分配模式的负载均衡代理服务器</p>
+
+<p>【TcpProxy技术交流QQ群】: 99328252　　加入群：<a href="http://jq.qq.com/?_wv=1027&amp;k=40qDFxw">http://jq.qq.com/?_wv=1027&amp;k=40qDFxw</a></p>
+
+<h2>
+<a id="特性" class="anchor" href="#%E7%89%B9%E6%80%A7" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>特性</h2>
+
+<p>1.　分配策略丰富，支持二级、多种分配策略  </p>
+
+<blockquote>
+<p><em>负载均衡策略</em>:<br>
+第一级: 采用来源IP计算hash值来分配到对应的组；<br>
+第二级: 在组内采用配置的方式(master/hash/rand)分配到对应的节点。      </p>
+</blockquote>
+
+<p>2.　性能强悍（见后续性能测试）<br>
+3.　自动检查后端服务器状态    </p>
+
+<h2>
+<a id="获取" class="anchor" href="#%E8%8E%B7%E5%8F%96" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>获取</h2>
+
+<pre><code>go get -u github.com/yl365/TcpProxy
+</code></pre>
+
+<h2>
+<a id="使用" class="anchor" href="#%E4%BD%BF%E7%94%A8" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用</h2>
+
+<p>1、 修改配置文件config.json</p>
+
+<pre><code>{
+    "Listen": ":18080",             //监听端口
+    "Mode": "master/hash/rand",     //分配模式,master/hash/rand根据场景选择一种
+    "AllHost": [
+        {
+            "min": 0,               //每组服务器的处理范围[0--999],每组分配不要重合
+            "max": 333, 
+            "Hosts": [
+                {
+                    "IP": "127.0.0.1:2000", 
+                    "status": 0
+                }, 
+                {
+                    "IP": "127.0.0.1:2001", 
+                    "status": 0
+                }
+            ]
+        }, 
+        {
+            "min": 334, 
+            "max": 666, 
+            "Hosts": [
+                {
+                    "IP": "127.0.0.1:2002", 
+                    "status": 0
+                }, 
+                {
+                    "IP": "127.0.0.1:2003", 
+                    "status": 0
+                }
+            ]
+        }, 
+        {
+            "min": 667, 
+            "max": 999, 
+            "Hosts": [
+                {
+                    "IP": "127.0.0.1:2004", 
+                    "status": 0
+                }, 
+                {
+                    "IP": "127.0.0.1:2005", 
+                    "status": 0
+                }
+            ]
+        }
+    ]
+}
+</code></pre>
+
+<p>2、 在配置目录运行: nohup ./TcpProxy &amp;</p>
+
+<h2>
+<a id="性能测试" class="anchor" href="#%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>性能测试</h2>
+
+<p>后端服务器采用spark作为目标服务器: <code>./spark -port 52241 "&lt;h1&gt;Ooops&lt;/h1&gt;"</code></p>
+
+<p>1、 直连spark测试:</p>
+
+<pre><code>[yl@mobile-server-61 bin]$ ./gobench -c 3000 -k -t 10  -u http://10.15.107.61:52241/
+Dispatching 3000 clients
+Waiting for results...
+
+Requests:                           729340 hits
+Successful requests:                729339 hits
+Network failed:                          0 hits
+Bad requests failed (!2xx):              0 hits
+Successful requests rate:            72933 hits/sec
+Read throughput:                   9481420 bytes/sec
+Write throughput:                  6587163 bytes/sec
+Test time:                              10 sec
+</code></pre>
+
+<p>2、 通过haproxy测试:</p>
+
+<pre><code>[yl@mobile-server-61 bin]$ ./gobench -c 3000 -k -t 10  -u http://10.15.107.61:8008/
+Dispatching 3000 clients
+Waiting for results...
+
+Requests:                           128291 hits
+Successful requests:                128291 hits
+Network failed:                          0 hits
+Bad requests failed (!2xx):              0 hits
+Successful requests rate:            12829 hits/sec
+Read throughput:                   1667952 bytes/sec
+Write throughput:                  1155709 bytes/sec
+Test time:                              10 sec
+</code></pre>
+
+<p>3、 通过TcpProxy测试:</p>
+
+<pre><code>[yl@mobile-server-61 bin]$ ./gobench -c 3000 -k -t 10  -u http://10.15.107.61:18080/
+Dispatching 3000 clients
+Waiting for results...
+
+Requests:                           403622 hits
+Successful requests:                403622 hits
+Network failed:                          0 hits
+Bad requests failed (!2xx):              0 hits
+Successful requests rate:            40362 hits/sec
+Read throughput:                   5247086 bytes/sec
+Write throughput:                  3659598 bytes/sec
+Test time:                              10 sec
+</code></pre>
+
+<p>欢迎试用并提出意见建议。如果发现bug，请Issues，谢谢！</p>
+
+<p>如果你觉得这个项目有意义，或者对你有帮助，或者仅仅是为了给我一点鼓励，请不要吝惜，给我一个<em>star</em>，谢谢！≡ω≡</p>
+
+<p>【TcpProxy技术交流QQ群】: 99328252　　加入群：<a href="http://jq.qq.com/?_wv=1027&amp;k=40qDFxw">http://jq.qq.com/?_wv=1027&amp;k=40qDFxw</a></p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/yl365/TcpProxy">Tcpproxy</a> is maintained by <a href="https://github.com/yl365">yl365</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>

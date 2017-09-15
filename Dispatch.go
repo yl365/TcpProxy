@@ -63,6 +63,8 @@ func getBackendHost(sAddr net.Addr) (string, bool) {
 func CheckHosts() {
 
 	for {
+		LoadConfig() //加载配置文件
+
 		for i, group := range ALLHOST.AllHost {
 
 			for ii, host := range group.Hosts {
@@ -87,7 +89,7 @@ func CheckHosts() {
 		}
 
 		fmt.Printf("\nCheckHosts AllHost: %+v\n", ALLHOST)
-		time.Sleep(10 * time.Second)
+		time.Sleep(time.Duration(ALLHOST.CheckInterval) * time.Second)
 	}
 
 }

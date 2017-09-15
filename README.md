@@ -25,7 +25,7 @@ go get -u github.com/yl365/TcpProxy
 
 1、 修改配置文件config.json
 
-```json
+```
 {
     "Listen": ":18080",             //监听端口
     "Mode": "master/hash/rand",     //分配模式,master/hash/rand根据场景选择一种

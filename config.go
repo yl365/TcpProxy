@@ -22,15 +22,16 @@ type Group struct {
 }
 
 type Root struct {
-	Listen  string  `json:"Listen"`
-	Mode    string  `json:"Mode"`
-	AllHost []Group `json:"AllHost"`
+	Listen        string  `json:"Listen"`
+	Mode          string  `json:"Mode"`
+	CheckInterval int64   `json:"CheckInterval"`
+	AllHost       []Group `json:"AllHost"`
 }
 
 var ALLHOST Root
 var lock sync.RWMutex
 
-func init() {
+func LoadConfig() {
 	rand.Seed(time.Now().UnixNano())
 	file, err := ioutil.ReadFile("config.json")
 	if err != nil {

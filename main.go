@@ -10,6 +10,7 @@ import (
 
 func main() {
 	go CheckHosts()
+        time.Sleep(2 * time.Second)
 
 	lis, err := net.Listen("tcp", ALLHOST.Listen)
 	if err != nil {
